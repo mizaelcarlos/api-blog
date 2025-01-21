@@ -22,14 +22,28 @@ class CategoriaControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
-    /** @test */
-    public function criando_uma_categoria()
-    {
-         // Cria um usuário para autenticação
-         $usuario = User::factory()->create();
 
-         // Autentica o usuário e pega o token
-         $token = $usuario->createToken('Test Token')->plainTextToken;
+    public function test_index()
+    {
+        // Cria um usuário e gera o token
+        $usuario = User::factory()->create();
+        $token = $usuario->createToken('Test Token')->plainTextToken;
+
+        // Realiza a requisição GET para o índice com o Bearer token
+        $response = $this->getJson('/api/categorias', [
+            'Authorization' => 'Bearer ' . $token,
+        ]);
+
+        // Verifica se a resposta tem status 200
+        $response->assertStatus(200);
+
+    }
+
+    public function test_criando_uma_categoria()
+    {
+         // Cria um usuário e gera o token
+        $usuario = User::factory()->create();
+        $token = $usuario->createToken('Test Token')->plainTextToken;
 
         // Dados para criação de categoria
         $dados = [
@@ -52,24 +66,44 @@ class CategoriaControllerTest extends TestCase
          ]);
     }
 
-    /**
-     * Testa o método index com token Bearer.
-     *
-     * @return void
-     */
-    public function test_index()
+    public function test_atualizando_categoria()
     {
-        // Cria um usuário e gera o token
-        $usuario = User::factory()->create();
-        $token = $usuario->createToken('Test Token')->plainTextToken;
+        // Cria um usuário e gera o token Bearer
+        $user = User::factory()->create();
+        $token = $user->createToken('Test Token')->plainTextToken;
 
-        // Realiza a requisição GET para o índice com o Bearer token
-        $response = $this->getJson('/api/categorias', [
+        // Cria uma categoria existente
+        $categoria = Categoria::factory()->create([
+            'nome' => 'Categoria Antiga',
+            'descricao' => 'Descrição Antiga'
+        ]);
+
+        // Dados para atualizar a categoria
+        $dadosAtualizados = [
+            'nome' => 'Categoria Atualizada',
+            'descricao' => 'Descrição Atualizada'
+        ];
+
+        // Realiza a requisição PUT para atualizar a categoria com o Bearer token
+        $response = $this->putJson('/api/categoria/atualizar/' . $categoria->id, $dadosAtualizados, [
             'Authorization' => 'Bearer ' . $token,
         ]);
 
-        // Verifica se a resposta tem status 200
+        // Verifica se a resposta tem status 200 OK
         $response->assertStatus(200);
 
+        // Verifica se a categoria foi realmente atualizada no banco de dados
+        $this->assertDatabaseHas('categoria', [
+            'id' => $categoria->id,
+            'nome' => 'Categoria Atualizada',
+            'descricao' => 'Descrição Atualizada',
+        ]);
+
+        // Verifica se a resposta contém os dados atualizados
+        $response->assertJsonFragment([
+            'nome' => 'Categoria Atualizada',
+            'descricao' => 'Descrição Atualizada',
+        ]);
     }
+
 }

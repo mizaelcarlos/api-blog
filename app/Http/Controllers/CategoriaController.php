@@ -5,26 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Categoria;
 use Illuminate\Support\Facades\Validator;
-    /**
-     * @OA\PathItem(path="/categorias")
-     */
+
 class CategoriaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-
-     /**
-     * @OA\Get(
-     *     path="/categorias",
-     *     summary="Obter todas as categorias",
-     *     operationId="index",
-     *     @OA\Response(
-     *         response="200",
-     *         description="Operação bem-sucedida"
-     *     )
-     * )
-     */
 
     public function index()
     {

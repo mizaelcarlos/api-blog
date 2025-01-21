@@ -15,15 +15,6 @@ class TagController extends Controller
         $tags = Tag::all();
         return response()->json($tags, 201);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('tag.cadastrar');
-    }
-
     /**
      * Store a newly created resource in storage.
      */
