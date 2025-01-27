@@ -29,7 +29,7 @@ class CategoriaControllerTest extends TestCase
         $usuario = User::factory()->create();
         $token = $usuario->createToken('Test Token')->plainTextToken;
 
-        // Realiza a requisição GET para o índice com o Bearer token
+        // Realiza a requisição GET para o index com o Bearer token
         $response = $this->getJson('/api/categorias', [
             'Authorization' => 'Bearer ' . $token,
         ]);
