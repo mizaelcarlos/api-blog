@@ -74,7 +74,7 @@ class PostController extends Controller
     {
         $post = Post::find($id);
         $foto = $post->foto;
-        if($request->foto != null){
+        if($request->foto != null || $request->foto != ''){
             $foto = $request->foto->store('fotos','public');
         }
 
@@ -86,7 +86,10 @@ class PostController extends Controller
             'foto' => $foto,
             'categoria_id' => $request->categoria_id
         ]);
-        return redirect()->route('post.index');
+        return response()->json([
+            'Mensagem' => 'Post atualizado com sucesso',
+            'dados' => $post
+        ],200);
     }
 
     /**
@@ -96,6 +99,8 @@ class PostController extends Controller
     {
         $post = Post::find($id);
         $post->delete();
-        return redirect()->route('post.index');
+        return response()->json([
+            'Mensagem' => 'Post removído com sucesso'
+        ],200);
     }
 }
