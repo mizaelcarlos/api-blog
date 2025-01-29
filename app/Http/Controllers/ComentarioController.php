@@ -28,13 +28,15 @@ class ComentarioController extends Controller
      */
     public function store(Request $request)
     {
-        Comentario::create([
+        $comentario = Comentario::create([
             'texto' => $request->texto,
             'post_id' => $request->post_id
         ]);
 
-        $posts = Post::with('comentarios')->get();
-        return view('post.index',compact('posts'));
+        return response()->json([
+            'Mensagem' => 'Comentário cadastrado com sucesso',
+            'dados' => $comentario
+        ],201);
     }
 
     /**
