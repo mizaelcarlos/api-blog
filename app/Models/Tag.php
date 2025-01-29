@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Tag extends Model
 {
     protected $table = 'tag';
+
     protected $fillable = ['nome'];
 
     public function posts(){

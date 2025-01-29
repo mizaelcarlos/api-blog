@@ -11,30 +11,21 @@ use App\Models\Categoria;
 
 class ComentarioTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
-    public function test_example(): void
-    {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
-    }
-
     public function test_cadastro_comentario(){
+        $hora = date('H:i:s');
 
         $categoria = Categoria::create([
-            'nome' => 'Equipamentos',
+            'nome' => 'Equipamentos '.$hora,
             'descricao' => 'Equipamentos Industriais'
         ]);
 
         $post = Post::create([
-            'titulo' => 'Novo equipamento de geração de Energia',
+            'titulo' => 'Novo equipamento de geração de Energia '.$hora,
             'conteudo' => 'Esse é o novo gerador de energia',
             'foto' => '',
             'categoria_id' => $categoria->id
         ]);
-        $hora = date('H:i:s');
+
         $comentario = Comentario::create([
             'texto' => 'Comentario Teste ' .$hora ,
             'post_id' => $post->id
@@ -48,18 +39,20 @@ class ComentarioTest extends TestCase
     }
 
     public function test_atualizar_comentario(){
+        $hora = date('H:i:s');
+
         $categoria = Categoria::create([
-            'nome' => 'Equipamentos',
+            'nome' => 'Equipamentos '.$hora,
             'descricao' => 'Equipamentos Industriais'
         ]);
 
         $post = Post::create([
-            'titulo' => 'Novo equipamento de geração de Energia',
+            'titulo' => 'Novo equipamento de geração de Energia '.$hora,
             'conteudo' => 'Esse é o novo gerador de energia',
             'foto' => '',
             'categoria_id' => $categoria->id
         ]);
-        $hora = date('H:i:s');
+
         $comentario = Comentario::create([
             'texto' => 'Comentario Teste ' .$hora ,
             'post_id' => $post->id
@@ -76,32 +69,34 @@ class ComentarioTest extends TestCase
 
     }
 
-    public function test_excluir_tag(){
+    public function test_excluir_comentario(){
+        $hora = date('H:i:s');
+
         $categoria = Categoria::create([
-            'nome' => 'Equipamentos',
+            'nome' => 'Equipamentos '.$hora,
             'descricao' => 'Equipamentos Industriais'
         ]);
 
         $post = Post::create([
-            'titulo' => 'Novo equipamento de geração de Energia',
+            'titulo' => 'Novo equipamento de geração de Energia '.$hora,
             'conteudo' => 'Esse é o novo gerador de energia',
             'foto' => '',
             'categoria_id' => $categoria->id
         ]);
-        $hora = date('H:i:s');
+
         $comentario = Comentario::create([
-            'texto' => 'Comentario Teste',
+            'texto' => 'Comentario Teste ' .$hora ,
             'post_id' => $post->id
         ]);
 
         $this->assertDatabaseHas('comentario',[
-            'texto' => 'Comentario Teste',
+            'texto' => 'Comentario Teste ' .$hora ,
         ]);
 
         $comentario->delete();
 
         $this->assertDatabaseMissing('comentario',[
-            'texto' => 'Comentario Teste',
+            'texto' => 'Comentario Teste ' .$hora ,
         ]);
 
     }
